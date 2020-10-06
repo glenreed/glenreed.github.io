@@ -1,0 +1,114 @@
+$viewport-font-size: 16 !default;
+$layout-font-size: $viewport-font-size !default;
+$base-font-size: $layout-font-size;
+$standard-container-pad: 20 !default;
+$standard-container-width: 1170 !default;
+$current-font-size: $layout-font-size !default;
+
+@function ems($px-length, $font-size:$base-font-size) {
+    @if unit($px-length) == '' {
+        $px-length: $px-length * 1px;
+    }
+    @if unit($font-size) == '' {
+        $font-size: $font-size * 1px;
+    }
+    @return ($px-length / $font-size)*1em;
+}
+
+// Remove the units from a value
+@function strip-units($number) {
+    @if unit($number) == '' {
+        @return $number;
+    }
+    @return $number / ($number * 0 + 1);
+}
+
+// Set a new font size by percent, automatically converting pixel values
+// if provided.
+@mixin font-scale($new-font-size, $new-line-height:null, $old-font-size:null) {
+    @if $old-font-size == null {
+        $old-font-size: $current-font-size;
+    }
+    $old-font-size: strip-units($old-font-size);
+
+    @if unit($new-font-size) == '%' {
+        // Use this value directly
+        $font-ratio: ($new-font-size / 100%);
+        $new-font-size: $old-font-size * $font-ratio;
+    } @else {
+        // Treat it as pixel units
+        $new-font-size: strip-units($new-font-size);
+        $font-ratio: $new-font-size / $old-font-size;
+    }
+    $font-ratio: $new-font-size / $old-font-size;
+
+    font-size:$font-ratio * 100%;
+
+    $last-cfs: $current-font-size;
+    $current-font-size: $new-font-size !global;
+
+    @if $new-line-height != null {
+        $line-ratio: 1.0;
+        @if unit($new-line-height) == '' and $new-line-height < 3 {
+            // Treat it as a proportion
+            $line-ratio: $new-line-height;
+            $new-line-height: $new-font-size * $line-ratio;
+        } @else {
+            // Treat it as a pixel measurement
+            $new-line-height: strip-units($new-line-height);
+            $line-ratio: $new-line-height / $new-font-size + 0.0001;
+        }
+        line-height:$line-ratio;
+    }
+    @content;
+
+    $current-font-size: $last-cfs !global;
+}
+
+@mixin viewport-below($px-width, $orientation:null) {
+    @if unit($px-width) == 'px' {
+        $px-width:strip-units($px-width);
+    }
+    @if $orientation != null {
+        @media screen and (max-width: (($px-width - 1) / $viewport-font-size * 1em)) and (orientation: $orientation) {
+            @content;
+        }
+    } @else {
+        @media screen and (max-width: (($px-width - 1) / $viewport-font-size * 1em)) {
+            @content;
+        }
+    }
+}
+
+@mixin viewport-above($px-width, $orientation:null) {
+    @if unit($px-width) == 'px' {
+        $px-width:strip-units($px-width);
+    }
+    @if $orientation != null {
+        @media screen and (min-width: (($px-width - 1) / $viewport-font-size * 1em)) and (orientation: $orientation) {
+            @content;
+        }
+    } @else {
+        @media screen and (min-width: (($px-width + 1) / $viewport-font-size * 1em)) {
+            @content;
+        }
+    }
+}
+
+@mixin spanning-container {
+    padding-left:calc(19.4872vw - #{ems(215.795)});
+    padding-right:calc(19.4872vw - #{ems(215.795)});
+
+    @include viewport-below(1210) {
+        padding-left:ems(20);
+        padding-right:ems(20);
+    }
+}
+
+@mixin standard-container($font-size:$layout-font-size) {
+    position:relative;
+    margin-left:auto;
+    margin-right:auto;
+    padding:0 ems($standard-container-pad, $font-size);
+    max-width:ems($standard-container-width, $font-size);
+}

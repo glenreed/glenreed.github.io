@@ -1,0 +1,21 @@
+{
+  "name": "glenreed",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glenreed/glenreed.github.io.git"
+  },
+  "scripts": {
+    "start": "parcel serve ./src/index.html",
+    "build": "parcel build ./src/index.html"
+  },
+  "author": "",
+  "devDependencies": {
+    "@parcel/transformer-css": "^2.0.0-alpha.3",
+    "@parcel/transformer-postcss": "^2.0.0-alpha.3",
+    "autoprefixer": "^9.8.6",
+    "normalize.css": "^8.0.1",
+    "parcel": "^2.0.0-beta.1",
+    "sass": "^1.26.11"
+  }
+}
