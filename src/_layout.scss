@@ -3,9 +3,21 @@ $layout-font-size: $viewport-font-size !default;
 $base-font-size: $layout-font-size;
 $standard-container-pad: 20 !default;
 $standard-container-width: 1170 !default;
-$current-font-size: $layout-font-size !default;
+$current-font-size: $layout-font-size;
 
-@function ems($px-length, $font-size:$base-font-size) {
+// Hidden visually and from layout, but with contents still in the page (not display:none)
+@mixin hidden {
+    border:0;
+    clip:rect(0 0 0 0);
+    height:1px;
+    margin:-1px;
+    overflow:hidden;
+    padding:0;
+    position:absolute;
+    width:1px;
+}
+
+@function ems($px-length, $font-size:$current-font-size) {
     @if unit($px-length) == '' {
         $px-length: $px-length * 1px;
     }

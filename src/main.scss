@@ -1,6 +1,15 @@
 @import "~/node_modules/normalize.css/normalize.css";
 @import "layout";
 
+$bg:#181d27;
+$link: #4768b3;
+$link-bg: #f2f5ff;
+$orange: #996B00;
+
+.assistive-text {
+    @include hidden;
+}
+
 html {
     font-size:16px;
     line-height:(28/16);
@@ -14,7 +23,6 @@ html {
 }
 
 header {
-    $bg:#181d27;
     padding-top:ems(50);
     padding-bottom:ems(50);
     background-color:$bg;
@@ -144,9 +152,68 @@ header {
     @include viewport-above(1200) {
         margin:(40/1200)*100vw auto;
     }
+
+    a {
+        color:$link;
+        transition:all 300ms;
+        &:focus,
+        &:hover {
+            background-color:$link-bg;
+        }
+    }
+
+    .extra {
+        margin-top:ems(40);
+        border-top:2px solid $orange;
+        padding-top:ems(20);
+    }
+
+    strong {
+        font-weight:600;
+    }
+
+    h3, h4, h5 {
+        font-family:"Raleway", sans-serif;
+        font-weight:600;
+        text-transform:uppercase;
+    }
+
+    h3 {
+        @include font-scale(28) {
+            margin:ems(30) 0 ems(20) 0;
+        }
+        color:$orange;
+    }
+
+    h4 {
+        @include font-scale(24) {
+            margin:ems(40) 0 ems(16) 0;
+        }
+    }
+
+    .plain-list {
+        padding:0;
+        li {
+            list-style-type:none;
+        }
+    }
+
+    .sourced-list {
+        li {
+            margin-top:ems(16);
+        }
+        .what {
+            font-weight:600;
+        }
+        .source {
+            text-transform:uppercase;
+            color:#767676;
+        }
+    }
 }
 
 .bio {
+
     @include viewport-below(870) {
         font-size:($base-font-size/870)*100vw;
     }
@@ -161,5 +228,12 @@ header {
 
     @include viewport-below(480) {
         @include font-scale(20, 30);
+    }
+}
+
+.first {
+    margin-top:ems(40);
+    &:first-line {
+        text-transform:uppercase;
     }
 }
