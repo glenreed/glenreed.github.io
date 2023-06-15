@@ -237,3 +237,9 @@ header {
         text-transform:uppercase;
     }
 }
+
+.as-of {
+    @include font-scale(15) {
+        margin-top:ems(50);
+    }
+}
